@@ -1052,35 +1052,43 @@ npm run pack:check</code></pre>
         </ol>
       </section>
 
-      <section id="deploiement" class="doc-section" data-search="déploiement vercel html css statique root directory clean urls production preview">
+      <section id="deploiement" class="doc-section" data-search="déploiement vercel html css statique root directory clean urls production preview github dépôt autonome">
         <div class="section-heading">
           <p class="section-kicker">14. Mise en ligne</p>
           <h2>Déployer cette documentation sur Vercel</h2>
         </div>
 
-        <h3>Structure du site</h3>
-        <pre><code class="language-text">pmt-document-site/
+        <h3>Structure du dépôt publié</h3>
+        <pre><code class="language-text">/
 ├─ index.html
 ├─ 404.html
 ├─ vercel.json
+├─ README.md
 └─ assets/
    ├─ site.css
    └─ site.js</code></pre>
 
+        <p>
+          Ce site est maintenant prévu comme dépôt autonome GitHub. Vercel doit donc déployer la racine du dépôt, et non un sous-dossier.
+        </p>
+
         <h3>Déploiement Vercel depuis l’interface</h3>
         <ol>
           <li>importe le dépôt Git dans Vercel</li>
-          <li>choisis `pmt-document-site` comme `Root Directory`</li>
+          <li>laisse le `Root Directory` sur `/`</li>
           <li>laisse le preset sur projet statique ou “Other”</li>
           <li>ne mets aucun build command</li>
           <li>ne mets aucun output directory supplémentaire</li>
           <li>déploie</li>
         </ol>
 
+        <h3>Dépôt GitHub visé</h3>
+        <pre><code class="language-text">https://github.com/MalickDevWeb/PMTMiniApp-Framwork-.git</code></pre>
+
         <h3>Déploiement Vercel depuis le terminal</h3>
         <pre><code class="language-bash">cd /home/pmt/WeChatProjects/Mes_document/documentation/pmt-document-site
-vercel
-vercel --prod</code></pre>
+npx vercel
+npx vercel --prod</code></pre>
 
         <h3>Prévisualisation locale</h3>
         <pre><code class="language-bash">cd /home/pmt/WeChatProjects/Mes_document/documentation/pmt-document-site
@@ -1151,7 +1159,7 @@ python3 -m http.server 4173</code></pre>
         </div>
         <div class="footer__meta">
           <p>Version framework : <strong>1.2.0</strong></p>
-          <p>Dossier source : <code>pmt-document-site/</code></p>
+          <p>Racine Vercel : <code>/</code></p>
         </div>
       </footer>
     </main>
