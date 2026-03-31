@@ -43,7 +43,6 @@
           <a href="#validateurs">Formulaires et validateurs</a>
           <a href="#cas-complets">Cas complets</a>
           <a href="#tests">Tests, maintenance et publication</a>
-          <a href="#deploiement">Déploiement Vercel</a>
           <a href="#faq">FAQ et règles de projet</a>
         </nav>
 
@@ -59,7 +58,7 @@
           <p class="eyebrow">Documentation développeur complète</p>
           <h1>PMTMiniApp, documenté comme un vrai framework</h1>
           <p class="hero__lead">
-            Cette version web rassemble l’essentiel du framework dans une documentation statique prête à être déployée sur Vercel :
+            Cette version web rassemble l’essentiel du framework dans une documentation statique claire et autonome :
             installation, configuration, auth backend, API HTTP, état, lifecycle, appareil, validateurs, pages, tests et conventions.
           </p>
           <div class="hero__actions">
@@ -76,12 +75,12 @@
 
           <div class="hero__stats" aria-label="Résumé express de la documentation">
             <article class="stat-card">
-              <strong>15 chapitres</strong>
-              <span>Une structure claire pour installer, configurer, développer, tester et publier.</span>
+              <strong>14 chapitres</strong>
+              <span>Une structure claire pour installer, configurer, développer, tester et maintenir.</span>
             </article>
             <article class="stat-card">
               <strong>100% statique</strong>
-              <span>Un site HTML/CSS/JS léger, rapide à charger et simple à déployer sur Vercel.</span>
+              <span>Un site HTML/CSS/JS léger, rapide à charger et simple à présenter à une équipe ou un client.</span>
             </article>
             <article class="stat-card">
               <strong>CLI + core</strong>
@@ -1067,62 +1066,9 @@ npm run pack:check</code></pre>
         </ol>
       </section>
 
-      <section id="deploiement" class="doc-section" data-search="déploiement vercel html css statique root directory clean urls production preview github dépôt autonome">
-        <div class="section-heading">
-          <p class="section-kicker">14. Mise en ligne</p>
-          <h2>Déployer cette documentation sur Vercel</h2>
-        </div>
-
-        <h3>Structure du dépôt publié</h3>
-        <pre><code class="language-text">/
-├─ index.html
-├─ 404.html
-├─ vercel.json
-├─ README.md
-└─ assets/
-   ├─ site.css
-   └─ site.js</code></pre>
-
-        <p>
-          Ce site est maintenant prévu comme dépôt autonome GitHub. Vercel doit donc déployer la racine du dépôt, et non un sous-dossier.
-        </p>
-
-        <h3>Déploiement Vercel depuis l’interface</h3>
-        <ol>
-          <li>importe le dépôt Git dans Vercel</li>
-          <li>laisse le `Root Directory` sur `/`</li>
-          <li>laisse le preset sur projet statique ou “Other”</li>
-          <li>ne mets aucun build command</li>
-          <li>ne mets aucun output directory supplémentaire</li>
-          <li>déploie</li>
-        </ol>
-
-        <h3>Dépôt GitHub visé</h3>
-        <pre><code class="language-text">https://github.com/MalickDevWeb/PMTMiniApp-Framwork-.git</code></pre>
-
-        <h3>Déploiement Vercel depuis le terminal</h3>
-        <pre><code class="language-bash">cd /home/pmt/WeChatProjects/Mes_document/documentation/pmt-document-site
-npx vercel
-npx vercel --prod</code></pre>
-
-        <h3>Prévisualisation locale</h3>
-        <pre><code class="language-bash">cd /home/pmt/WeChatProjects/Mes_document/documentation/pmt-document-site
-python3 -m http.server 4173</code></pre>
-
-        <p>Puis ouvre `http://localhost:4173`.</p>
-
-        <div class="callout callout--success">
-          <strong>Bon réflexe Vercel</strong>
-          <p>
-            Garde cette documentation comme un site statique séparé du framework. Tu évites ainsi de mélanger le code produit et le site de doc,
-            tout en gardant un déploiement très simple.
-          </p>
-        </div>
-      </section>
-
       <section id="faq" class="doc-section" data-search="faq règles erreurs bonnes pratiques anti patterns what not to do">
         <div class="section-heading">
-          <p class="section-kicker">15. Règles de projet</p>
+          <p class="section-kicker">14. Règles de projet</p>
           <h2>FAQ, conventions et anti-patterns</h2>
         </div>
 
@@ -1168,13 +1114,13 @@ python3 -m http.server 4173</code></pre>
         <div>
           <p class="footer__title">PMTMiniApp Documentation</p>
           <p>
-            Version HTML/CSS statique pensée pour un déploiement Vercel. Elle complète les documents Markdown présents dans le dépôt,
+            Version HTML/CSS statique pensée comme une vitrine de documentation autonome. Elle complète les documents Markdown présents dans le dépôt,
             mais reste autonome pour un développeur qui veut comprendre et utiliser le framework sans ouvrir tout le code.
           </p>
         </div>
         <div class="footer__meta">
           <p>Version framework : <strong>1.2.0</strong></p>
-          <p>Racine Vercel : <code>/</code></p>
+          <p>Format : <code>site statique autonome</code></p>
         </div>
       </footer>
     </main>
