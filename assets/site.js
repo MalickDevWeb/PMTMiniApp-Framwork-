@@ -3,6 +3,7 @@ const sidebarToggle = document.getElementById('sidebarToggle');
 const docSearch = document.getElementById('docSearch');
 const navLinks = Array.from(document.querySelectorAll('.sidebar__nav a'));
 const sections = Array.from(document.querySelectorAll('.doc-section'));
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 if (sidebarToggle && sidebar) {
   sidebarToggle.addEventListener('click', () => {
@@ -51,6 +52,35 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 sections.forEach((section) => observer.observe(section));
+
+const revealTargets = Array.from(document.querySelectorAll(
+  '.hero__copy, .hero__panel .panel, .doc-section, .doc-columns > div, .card, .mini-card, .step, .faq__item, .footer'
+));
+
+revealTargets.forEach((target, index) => {
+  target.classList.add('reveal-target');
+  target.style.setProperty('--reveal-delay', `${(index % 6) * 55}ms`);
+});
+
+if (prefersReducedMotion.matches) {
+  revealTargets.forEach((target) => target.classList.add('is-visible'));
+} else {
+  document.body.classList.add('has-motion');
+
+  const revealObserver = new IntersectionObserver((entries, currentObserver) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      entry.target.classList.add('is-visible');
+      currentObserver.unobserve(entry.target);
+    });
+  }, {
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.14,
+  });
+
+  revealTargets.forEach((target) => revealObserver.observe(target));
+}
 
 document.querySelectorAll('pre').forEach((pre) => {
   const code = pre.querySelector('code');
