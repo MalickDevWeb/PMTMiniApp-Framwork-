@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMTMiniApp Docs</title>
+  <meta
+    name="description"
+    content="Documentation complète de PMTMiniApp : installation, configuration, auth, API, état, lifecycle, appareil, validateurs, pages, tests et bonnes pratiques."
+  >
+  <link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+  <div class="site-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__inner">
+        <a class="brand" href="#top">
+          <span class="brand__eyebrow">Framework Mini Program</span>
+          <strong class="brand__title">PMTMiniApp</strong>
+          <span class="brand__version">Docs HTML/CSS · v1.2.0</span>
+        </a>
+
+        <button class="sidebar__toggle" id="sidebarToggle" type="button" aria-expanded="false" aria-controls="sidebarNav">
+          Menu
+        </button>
+
+        <div class="sidebar__search">
+          <label class="sr-only" for="docSearch">Rechercher dans la documentation</label>
+          <input id="docSearch" type="search" placeholder="Rechercher une section, une commande, un concept">
+        </div>
+
+        <nav class="sidebar__nav" id="sidebarNav">
+          <a href="#presentation">Présentation</a>
+          <a href="#demarrage">Démarrage rapide</a>
+          <a href="#structure">Structure du projet</a>
+          <a href="#workflow">Workflow quotidien</a>
+          <a href="#configuration">Configuration</a>
+          <a href="#auth">Authentification</a>
+          <a href="#api">API et verbes HTTP</a>
+          <a href="#pages">Pages et routage</a>
+          <a href="#etat">État et lifecycle</a>
+          <a href="#appareil">Appareil et capacités natives</a>
+          <a href="#validateurs">Formulaires et validateurs</a>
+          <a href="#cas-complets">Cas complets</a>
+          <a href="#tests">Tests, maintenance et publication</a>
+          <a href="#deploiement">Déploiement Vercel</a>
+          <a href="#faq">FAQ et règles de projet</a>
+        </nav>
+
+        <div class="sidebar__meta">
+          <p>Cette documentation est pensée pour un développeur qui doit comprendre vite, brancher un backend réel, utiliser les services natifs, et garder un code propre.</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content" id="top">
+      <header class="hero">
+        <div class="hero__copy">
+          <p class="eyebrow">Documentation développeur complète</p>
+          <h1>PMTMiniApp, documenté comme un vrai framework</h1>
+          <p class="hero__lead">
+            Cette version web rassemble l’essentiel du framework dans une documentation statique prête à être déployée sur Vercel :
+            installation, configuration, auth backend, API HTTP, état, lifecycle, appareil, validateurs, pages, tests et conventions.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#demarrage">Commencer</a>
+            <a class="button button--ghost" href="#auth">Voir l’auth backend</a>
+          </div>
+          <div class="hero__badges" aria-label="Points clés de la documentation">
+            <span class="hero__badge">Auth backend</span>
+            <span class="hero__badge">API HTTP</span>
+            <span class="hero__badge">État + lifecycle</span>
+            <span class="hero__badge">Appareil natif</span>
+            <span class="hero__badge">Validateurs</span>
+          </div>
+        </div>
+
+        <div class="hero__panel">
+          <div class="panel">
+            <h2>Ce que contient déjà le framework</h2>
+            <ul class="check-list">
+              <li>Starter Mini Program prêt à l’emploi</li>
+              <li>CLI `create-pmtminiapp`</li>
+              <li>Auth locale ou backend réelle</li>
+              <li>Routes, pages et sync `app.json`</li>
+              <li>État global, lifecycle, bus et storage</li>
+              <li>API layer, auth avancée, validateurs, appareil</li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <section id="presentation" class="doc-section" data-search="présentation framework starter cli docs complet">
+        <div class="section-heading">
+          <p class="section-kicker">1. Vue d’ensemble</p>
+          <h2>Présentation du framework</h2>
+        </div>
+
+        <div class="grid grid--cards">
+          <article class="card">
+            <h3>Ce qu’est PMTMiniApp</h3>
+            <p>
+              `PMTMiniApp` est un framework frontend pour WeChat Mini Program. Il ne remplace pas ton backend : il structure le
+              projet, centralise la configuration, les services, l’auth, l’API, les capacités appareil et les conventions de page.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Ce qu’il n’est pas</h3>
+            <p>
+              Ce n’est pas un backend, ce n’est pas un ORM, et ce n’est pas un moteur de sécurité serveur. Le backend reste la source
+              de vérité pour les données, les autorisations et les sessions réelles.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Ce que le développeur modifie vraiment</h3>
+            <p>
+              En pratique, le développeur d’application touche surtout `config/`, `pages/`, `routage/routes.json`, les composants métier
+              et quelques services applicatifs. Le cœur `core/` reste stable dans la majorité des projets.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout callout--info">
+          <strong>Règle centrale</strong>
+          <p>
+            Une page ne doit pas porter seule toute la logique du projet. Elle affiche, lit les services du framework, lance des actions
+            claires, puis laisse `core/`, `config/`, `authService`, `apiService`, `configurationAppareil` et `gestionnaireEtat` faire le travail.
+          </p>
+        </div>
+
+        <div class="grid grid--cards">
+          <article class="card">
+            <h3>Si tu veux brancher un backend</h3>
+            <p>Commence par `config/environments.js`, puis ajuste `config/authProvider.js` si le sujet touche l’authentification.</p>
+          </article>
+          <article class="card">
+            <h3>Si tu veux créer un écran</h3>
+            <p>Utilise `create:page`, puis travaille dans `pages/`, pas directement dans `app.json` ou le cœur du framework.</p>
+          </article>
+          <article class="card">
+            <h3>Si tu veux un service natif</h3>
+            <p>Passe par `serviceApp().configurationAppareil` avant d’aller fouiller dans les sous-services avancés.</p>
+          </article>
+          <article class="card">
+            <h3>Si tu veux valider un formulaire</h3>
+            <p>Utilise `creerFormHelper` et `utils/validators` pour éviter de réécrire la logique de saisie et de messages.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="demarrage" class="doc-section" data-search="installation démarrage create pmtminiapp npx npm create update">
+        <div class="section-heading">
+          <p class="section-kicker">2. Installation</p>
+          <h2>Démarrage rapide</h2>
+        </div>
+
+        <div class="doc-columns">
+          <div>
+            <h3>Créer un projet</h3>
+            <pre><code class="language-bash">npx create-pmtminiapp mon-app</code></pre>
+
+            <p>Ou :</p>
+
+            <pre><code class="language-bash">npm create pmtminiapp mon-app</code></pre>
+
+            <h3>Mettre à jour un projet existant</h3>
+            <pre><code class="language-bash">npx create-pmtminiapp update mon-app</code></pre>
+
+            <p>Ou depuis la racine du projet :</p>
+
+            <pre><code class="language-bash">npm run framework:update</code></pre>
+          </div>
+
+          <div>
+            <h3>Vérification complète du starter</h3>
+            <pre><code class="language-bash">npm run framework:ready</code></pre>
+
+            <p>Cette commande enchaîne :</p>
+            <ul>
+              <li>`sync:pages`</li>
+              <li>`doctor:navigation`</li>
+              <li>tous les tests du framework</li>
+            </ul>
+
+            <h3>Scripts de base à connaître</h3>
+            <pre><code class="language-bash">npm run create:page -- nomPage
+npm run remove:page -- nomPage
+npm run repair:pages
+npm run sync:pages
+npm run doctor
+npm run check</code></pre>
+          </div>
+        </div>
+
+        <div class="callout callout--warning">
+          <strong>Important</strong>
+          <p>
+            `routes.json` décrit la navigation. Il ne crée pas les fichiers physiques d’une page. Pour créer une vraie page, utilise
+            `npm run create:page -- nomPage`.
+          </p>
+        </div>
+      </section>
+
+      <section id="structure" class="doc-section" data-search="structure projet config core pages components routage utils tests">
+        <div class="section-heading">
+          <p class="section-kicker">3. Architecture</p>
+          <h2>Structure du projet</h2>
+        </div>
+
+        <div class="doc-columns">
+          <div>
+            <pre><code class="language-text">mon-app/
+├─ app.js
+├─ app.json
+├─ config/
+├─ core/
+├─ components/
+├─ pages/
+├─ routage/
+├─ utils/
+├─ scripts/
+└─ tests/</code></pre>
+          </div>
+
+          <div>
+            <div class="mini-card">
+              <h3>`config/`</h3>
+              <p>Les vrais points d’entrée du développeur : backend, auth, appareil, docs A à Z.</p>
+            </div>
+            <div class="mini-card">
+              <h3>`core/`</h3>
+              <p>Le moteur du framework : auth, API, état, storage, navigation, bootstrap.</p>
+            </div>
+            <div class="mini-card">
+              <h3>`pages/`</h3>
+              <p>Les écrans WeChat. Une page reste simple : UI, helpers, services, actions.</p>
+            </div>
+            <div class="mini-card">
+              <h3>`routage/`</h3>
+              <p>La source de vérité du routage via `routes.json`.</p>
+            </div>
+            <div class="mini-card">
+              <h3>`utils/`</h3>
+              <p>Helpers de page, `formHelper`, validateurs, messages et builders.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" class="doc-section" data-search="workflow quotidien pages sync doctor repair checks développeur">
+        <div class="section-heading">
+          <p class="section-kicker">4. Workflow</p>
+          <h2>Workflow quotidien du développeur</h2>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step__index">1</span>
+            <div>
+              <h3>Créer ou réparer les pages</h3>
+              <pre><code class="language-bash">npm run create:page -- dashboard
+npm run repair:pages</code></pre>
+            </div>
+          </article>
+
+          <article class="step">
+            <span class="step__index">2</span>
+            <div>
+              <h3>Modifier `routage/routes.json` si besoin</h3>
+              <p>Déclare les pages, l’entrée, les guards et la structure de navigation.</p>
+            </div>
+          </article>
+
+          <article class="step">
+            <span class="step__index">3</span>
+            <div>
+              <h3>Synchroniser la navigation</h3>
+              <pre><code class="language-bash">npm run sync:pages</code></pre>
+            </div>
+          </article>
+
+          <article class="step">
+            <span class="step__index">4</span>
+            <div>
+              <h3>Tester l’état du projet</h3>
+              <pre><code class="language-bash">npm run doctor
+npm run check</code></pre>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="configuration" class="doc-section" data-search="configuration environments authProvider configuration_Appareil config readme backend appareil">
+        <div class="section-heading">
+          <p class="section-kicker">5. Configuration</p>
+          <h2>Les fichiers qu’un développeur modifie vraiment</h2>
+        </div>
+
+        <div class="grid grid--cards">
+          <article class="card">
+            <h3>`config/environments.js`</h3>
+            <p>Définit l’environnement actif, `baseUrl`, `prefix`, `timeout`, headers, logs, flags et stratégie auth.</p>
+            <pre><code class="language-javascript">const envConfig = Object.freeze({
+  currentEnv: 'prod',
+  environments: Object.freeze({
+    prod: Object.freeze({
+      api: Object.freeze({
+        baseUrl: 'https://api.exemple.com',
+        prefix: '/v1',
+        timeoutMs: 10000,
+        defaultHeaders: Object.freeze({}),
+        retry: Object.freeze({
+          enabled: true,
+          count: 2,
+          delayMs: 300,
+          backoffFactor: 2,
+          retriableStatusCodes: Object.freeze([408, 429, 500, 502, 503, 504]),
+        }),
+        mockEnabled: false,
+      }),
+      auth: Object.freeze({
+        strategy: 'api',
+        redirectAfterLogin: 'index',
+        redirectIfGuest: 'login',
+      }),
+      logs: Object.freeze({
+        enabled: false,
+        api: false,
+      }),
+      featureFlags: Object.freeze({}),
+    }),
+  }),
+})</code></pre>
+          </article>
+
+          <article class="card">
+            <h3>`config/authProvider.js`</h3>
+            <p>Décrit comment ton backend auth fonctionne : transport, champs login, endpoints, rôles, OTP, social, refresh et mapping avancé.</p>
+          </article>
+
+          <article class="card">
+            <h3>`config/configuration_Appareil.js`</h3>
+            <p>Active et règle les capacités natives : appareil, IP publique, permissions, Bluetooth, notifications et stratégie d’accès.</p>
+          </article>
+        </div>
+
+        <div class="callout callout--success">
+          <strong>Bon réflexe</strong>
+          <p>
+            Commence toujours par `config/`. Si tu te retrouves à modifier `core/` pour brancher un backend classique, c’est souvent
+            que la configuration n’a pas été assez exploitée.
+          </p>
+        </div>
+      </section>
+
+      <section id="auth" class="doc-section" data-search="auth authentification bearer cookie csrf role google social otp 2fa refresh status authorization">
+        <div class="section-heading">
+          <p class="section-kicker">6. Authentification</p>
+          <h2>Brancher n’importe quel backend auth proprement</h2>
+        </div>
+
+        <p>
+          L’objectif du framework est simple : la page `login` reste stable, et le backend est branché surtout via
+          `config/environments.js` et `config/authProvider.js`.
+        </p>
+
+        <h3>Cas simple : backend Bearer classique</h3>
+        <pre><code class="language-javascript">const authProvider = Object.freeze({
+  transport: 'bearer',
+
+  loginFields: Object.freeze({
+    identifiant: 'email',
+    motDePasse: 'password',
+  }),
+
+  endpoints: Object.freeze({
+    login: '/auth/login',
+    me: '/auth/me',
+    logout: '/auth/logout',
+  }),
+
+  redirectsByRole: Object.freeze({
+    ADMIN: 'dashboardAdmin',
+    USER: 'index',
+  }),
+})</code></pre>
+
+        <h3>Cas simple : backend cookie + CSRF</h3>
+        <pre><code class="language-javascript">const authProvider = Object.freeze({
+  transport: 'cookie',
+
+  loginFields: Object.freeze({
+    identifiant: 'identifiant',
+    motDePasse: 'motDePasse',
+  }),
+
+  endpoints: Object.freeze({
+    login: '/api/authContext/login',
+    me: '/api/authContext',
+    logout: '/api/authContext/logout',
+  }),
+
+  advanced: Object.freeze({
+    useCsrf: true,
+  }),
+})</code></pre>
+
+        <h3>Refresh token automatique</h3>
+        <pre><code class="language-javascript">refresh: Object.freeze({
+  enabled: true,
+  auto: true,
+  payloadKey: 'refreshToken',
+  auth: false,
+})</code></pre>
+
+        <h3>OTP / 2FA</h3>
+        <pre><code class="language-javascript">endpoints: Object.freeze({
+  login: '/auth/login',
+  me: '/auth/me',
+  otpRequest: '/auth/otp/request',
+  otpVerify: '/auth/otp/verify',
+  secondFactor: '/auth/2fa/verify',
+  logout: '/auth/logout',
+}),
+
+otp: Object.freeze({
+  enabled: true,
+  requestFields: Object.freeze({
+    identifiant: 'telephone',
+    canal: 'channel',
+  }),
+  verifyFields: Object.freeze({
+    identifiant: 'telephone',
+    code: 'otpCode',
+    challengeId: 'challengeId',
+  }),
+  secondFactorFields: Object.freeze({
+    code: 'code',
+    challengeId: 'challengeId',
+  }),
+})</code></pre>
+
+        <h3>Login social via backend</h3>
+        <p>
+          Le framework expose `authService.loginSocial(...)`. La sécurité reste côté backend. Le frontend consomme seulement
+          le contrat backend, pas la logique OAuth sensible.
+        </p>
+
+        <pre><code class="language-javascript">endpoints: Object.freeze({
+  login: '/auth/login',
+  me: '/auth/me',
+  social: '/auth/social',
+  logout: '/auth/logout',
+}),
+
+socialProviders: Object.freeze({
+  google: Object.freeze({
+    enabled: true,
+    mode: 'code',
+  }),
+}),
+
+social: Object.freeze({
+  providerField: 'provider',
+  codeField: 'code',
+  tokenField: 'token',
+  idTokenField: 'idToken',
+  redirectUriField: 'redirectUri',
+})</code></pre>
+
+        <h3>Cas Google avec redirection backend</h3>
+        <div class="callout callout--info">
+          <strong>Important</strong>
+          <p>
+            Le framework ne pilote pas automatiquement l’ouverture navigateur Google dans le core. Le pattern recommandé est :
+            le backend gère la redirection OAuth Google, puis le frontend récupère le `code` ou laisse le backend créer la session,
+            puis appelle `authService.loginSocial(...)` ou `authService.restaurer()`.
+          </p>
+        </div>
+
+        <pre><code class="language-javascript">const { authService } = serviceApp()
+
+const resultat = await authService.loginSocial({
+  provider: 'google',
+  code: codeGoogle,
+  redirectUri: 'https://ton-retour-oauth',
+})</code></pre>
+
+        <h3>Redirection par rôle et statut</h3>
+        <pre><code class="language-javascript">redirectsByRole: Object.freeze({
+  ADMIN: 'dashboardAdmin',
+  CLIENT: 'dashboardClient',
+}),
+
+redirectsByStatus: Object.freeze({
+  PENDING: 'attenteValidation',
+  BLOCKED: 'compteBloque',
+})</code></pre>
+
+        <h3>Mapping avancé pour backend atypique</h3>
+        <pre><code class="language-javascript">advanced: Object.freeze({
+  useCsrf: false,
+  tokenKeys: Object.freeze(['sessionToken']),
+  userKeys: Object.freeze(['profileData']),
+  accountKeys: Object.freeze(['organisation']),
+  userIdKeys: Object.freeze(['uid']),
+  nameKeys: Object.freeze(['displayName']),
+  emailKeys: Object.freeze(['mail']),
+  accountIdKeys: Object.freeze(['oid']),
+  accountTypeKeys: Object.freeze(['kind']),
+  accountNameKeys: Object.freeze(['label']),
+  roleKeys: Object.freeze(['role']),
+  statusKeys: Object.freeze(['status']),
+})</code></pre>
+
+        <h3>Méthodes frontend déjà exposées</h3>
+        <pre><code class="language-javascript">const { authService } = serviceApp()
+
+await authService.login({ identifiant, motDePasse })
+await authService.restaurer()
+await authService.rafraichir()
+await authService.logout()
+await authService.loginSocial({ provider, code })
+await authService.demanderOtp({ identifiant, canal: 'sms' })
+await authService.verifierOtp({ identifiant, code, challengeId })
+await authService.verifierSecondFacteur({ code, challengeId })</code></pre>
+      </section>
+
+      <section id="api" class="doc-section" data-search="api http get post put patch delete supprimer requete requeteDetaillee payload serviceApi">
+        <div class="section-heading">
+          <p class="section-kicker">7. Couche HTTP</p>
+          <h2>API, verbes HTTP et organisation du code réseau</h2>
+        </div>
+
+        <p>
+          Dans PMTMiniApp, les pages ne doivent presque jamais appeler `wx.request` directement. Elles passent par `apiService`,
+          puis idéalement par un client métier dédié.
+        </p>
+
+        <h3>Méthodes disponibles</h3>
+        <pre><code class="language-javascript">const { apiService } = serviceApp()
+
+await apiService.get('/clients', { auth: true })
+await apiService.post('/clients', payload, { auth: true })
+await apiService.put('/clients/42', payload, { auth: true })
+await apiService.patch('/clients/42', payload, { auth: true })
+await apiService.supprimer('/clients/42', { auth: true })
+await apiService.requete({ method: 'HEAD', path: '/sante' })
+await apiService.requeteDetaillee({ method: 'GET', path: '/clients', auth: true })</code></pre>
+
+        <div class="grid grid--cards">
+          <article class="card">
+            <h3>`GET`</h3>
+            <p>Lire une ressource ou une liste.</p>
+          </article>
+          <article class="card">
+            <h3>`POST`</h3>
+            <p>Créer une ressource ou déclencher une action.</p>
+          </article>
+          <article class="card">
+            <h3>`PUT`</h3>
+            <p>Remplacer une ressource complète.</p>
+          </article>
+          <article class="card">
+            <h3>`PATCH`</h3>
+            <p>Modifier partiellement une ressource.</p>
+          </article>
+          <article class="card">
+            <h3>`DELETE`</h3>
+            <p>Supprimer une ressource.</p>
+          </article>
+        </div>
+
+        <h3>Exemple propre : page → client API → backend</h3>
+        <pre><code class="language-javascript">function creerClientApiClients(apiService) {
+  return {
+    lister() {
+      return apiService.get('/clients', { auth: true })
+    },
+    creer(payload) {
+      return apiService.post('/clients', payload, { auth: true })
+    },
+    modifier(id, payload) {
+      return apiService.patch(`/clients/${id}`, payload, { auth: true })
+    },
+    supprimer(id) {
+      return apiService.supprimer(`/clients/${id}`, { auth: true })
+    },
+  }
+}</code></pre>
+
+        <div class="callout callout--success">
+          <strong>Règle API</strong>
+          <p>
+            Page = interface. Client API = logique réseau. `apiService` = transport HTTP. Backend = traitement réel.
+          </p>
+        </div>
+      </section>
+
+      <section id="pages" class="doc-section" data-search="pages routage routes app.json create page remove page repair pages sync pages navigation guards">
+        <div class="section-heading">
+          <p class="section-kicker">8. Pages</p>
+          <h2>Pages, routage et navigation</h2>
+        </div>
+
+        <h3>Source de vérité du routage</h3>
+        <p>
+          Le point d’entrée routage est `routage/routes.json`. Il déclare :
+        </p>
+        <ul>
+          <li>la page d’entrée</li>
+          <li>les routes</li>
+          <li>les guards éventuels</li>
+        </ul>
+
+        <pre><code class="language-json">{
+  "pageEntree": "login",
+  "routes": {
+    "login": "pages/login/login",
+    "index": "pages/index/index",
+    "inscription": "pages/inscription/inscription"
+  }
+}</code></pre>
+
+        <h3>Créer une page</h3>
+        <pre><code class="language-bash">npm run create:page -- profil</code></pre>
+
+        <p>Cette commande crée :</p>
+        <ul>
+          <li>`pages/profil/profil.js`</li>
+          <li>`pages/profil/profil.json`</li>
+          <li>`pages/profil/profil.wxml`</li>
+          <li>`pages/profil/profil.wxss`</li>
+          <li>la route associée</li>
+        </ul>
+
+        <h3>Synchroniser</h3>
+        <pre><code class="language-bash">npm run sync:pages</code></pre>
+
+        <p>
+          Cette commande aligne `routes.json`, `app.json` et `routes.runtime.js`.
+        </p>
+
+        <h3>Réparer ou supprimer</h3>
+        <pre><code class="language-bash">npm run repair:pages
+npm run remove:page -- profil</code></pre>
+
+        <h3>Naviguer depuis une page</h3>
+        <pre><code class="language-javascript">const { navigation } = serviceApp()
+
+await navigation.allerA('index')
+await navigation.remplacerPage('login')</code></pre>
+
+        <div class="callout callout--warning">
+          <strong>Important</strong>
+          <p>
+            Modifier seulement `routes.json` ne crée pas les fichiers d’une page. Le routeur décrit la navigation. `create:page` crée la page physique.
+          </p>
+        </div>
+      </section>
+
+      <section id="etat" class="doc-section" data-search="etat lifecycle serviceApp pageHelpers loadingBehavior gestionnaireEtat onState emit storage sessionService">
+        <div class="section-heading">
+          <p class="section-kicker">9. Runtime applicatif</p>
+          <h2>État global, lifecycle, bus et storage</h2>
+        </div>
+
+        <h3>Ce qu’il ne faut pas mélanger</h3>
+        <div class="grid grid--cards">
+          <article class="card">
+            <h3>`data` / `setData`</h3>
+            <p>État visuel local de la page.</p>
+          </article>
+          <article class="card">
+            <h3>`gestionnaireEtat`</h3>
+            <p>État global de l’application et bus d’événements.</p>
+          </article>
+          <article class="card">
+            <h3>`storage` / `sessionService`</h3>
+            <p>Persistance locale, tokens, restauration et synchronisation.</p>
+          </article>
+        </div>
+
+        <h3>Helpers de page</h3>
+        <pre><code class="language-javascript">const pageHelpers = creerPageHelpers({
+  nomPage: 'profil',
+  dataInitiale: {
+    nomActuel: 'Invite',
+  },
+})
+
+Page({
+  behaviors: [loadingBehavior],
+  data: pageHelpers.dataInitiale(),
+
+  onLoad() {
+    pageHelpers.onLoad(this, () => {
+      pageHelpers.abonner(this, () => {
+        const { profilService } = serviceApp()
+        return profilService.onNomChange((nom) => {
+          this.setData({ nomActuel: nom || 'Invite' })
+        })
+      })
+    })
+  },
+
+  async onShow() {
+    await pageHelpers.onShow(this, async () => {
+      this.rechargerEtat()
+    })
+  },
+
+  onUnload() {
+    pageHelpers.onUnload(this)
+  },
+})</code></pre>
+
+        <h3>État global</h3>
+        <pre><code class="language-javascript">const { gestionnaireEtat } = serviceApp()
+
+gestionnaireEtat.set('utilisateur.nom', 'Aicha')
+const nom = gestionnaireEtat.get('utilisateur.nom', 'Invite')
+gestionnaireEtat.remove('utilisateur.nom')
+
+const stop = gestionnaireEtat.onState('utilisateur.nom', (value) => {
+  console.log(value)
+})
+
+stop()</code></pre>
+
+        <h3>Bus événementiel</h3>
+        <pre><code class="language-javascript">const { gestionnaireEtat } = serviceApp()
+
+const unsubscribe = gestionnaireEtat.on('ui.refresh', (payload) => {
+  console.log(payload.source)
+})
+
+gestionnaireEtat.emit('ui.refresh', { source: 'login' })
+gestionnaireEtat.once('ui.modal.close', () => console.log('une fois'))
+gestionnaireEtat.off('ui.refresh')
+unsubscribe()</code></pre>
+
+        <h3>Services métier au-dessus de l’état</h3>
+        <pre><code class="language-javascript">const {
+  profilService,
+  utilisateurService,
+  compteService,
+  sessionService,
+} = serviceApp()
+
+profilService.mettreNom('Aicha')
+utilisateurService.hydraterUtilisateur({ id: 'u1', nom: 'Aicha', email: 'aicha@mail.com' })
+compteService.hydraterCompte({ id: 'c1', type: 'ADMIN', nom: 'Compte principal' })
+await sessionService.sauvegarderToken('abc123')</code></pre>
+
+        <div class="callout callout--info">
+          <strong>Règle lifecycle</strong>
+          <p>
+            `onLoad` démarre, `onShow` relit, `onUnload` nettoie. Et si tu veux garder ça propre, passe par `pageHelpers`.
+          </p>
+        </div>
+      </section>
+
+      <section id="appareil" class="doc-section" data-search="appareil camera biometrie face id empreinte localisation map bluetooth notifications reseau ip accessibilite mouvement ecran">
+        <div class="section-heading">
+          <p class="section-kicker">10. Capacités natives</p>
+          <h2>Appareil, permissions et services WeChat</h2>
+        </div>
+
+        <p>
+          La façade simple à utiliser dans une page est :
+        </p>
+
+        <pre><code class="language-javascript">const { configurationAppareil } = serviceApp()</code></pre>
+
+        <h3>Méthodes simples exposées</h3>
+        <pre><code class="language-javascript">await configurationAppareil.assurerPermission('camera')
+await configurationAppareil.scannerCode()
+await configurationAppareil.choisirImage()
+await configurationAppareil.prendrePhoto()
+await configurationAppareil.obtenirPosition()
+await configurationAppareil.obtenirPositionApprox()
+await configurationAppareil.choisirLieu()
+await configurationAppareil.ouvrirCarte({ latitude, longitude, nom: 'Point' })
+await configurationAppareil.demanderNotifications()
+await configurationAppareil.ouvrirBluetooth()
+await configurationAppareil.demarrerRechercheBluetooth()
+await configurationAppareil.lireContexteReseau({ avecIp: true })
+await configurationAppareil.lireInfosAppareil()
+await configurationAppareil.vibrerCourt()
+await configurationAppareil.verifierBiometrieDisponible()
+await configurationAppareil.verifierBiometrieEnregistree()
+await configurationAppareil.authentifierBiometrie({ authContent: 'Confirme ton identité' })
+await configurationAppareil.lireLuminosite()
+await configurationAppareil.definirLuminosite(0.7)
+await configurationAppareil.garderEcranActif(true)
+await configurationAppareil.demarrerEcouteOrientation()
+await configurationAppareil.verifierAccessibilite()</code></pre>
+
+        <h3>Ce qui est explicitement indisponible en Mini Program</h3>
+        <ul>
+          <li>IMEI</li>
+          <li>Android ID</li>
+          <li>numéro de série matériel</li>
+          <li>adresse MAC brute</li>
+        </ul>
+
+        <p>
+          Si tu as besoin d’un identifiant stable côté app, utilise l’identifiant d’installation fourni par le framework plutôt que
+          d’essayer de lire un identifiant matériel non exposé.
+        </p>
+
+        <h3>Configuration appareil</h3>
+        <pre><code class="language-javascript">const configurationAppareil = Object.freeze({
+  permissions: Object.freeze({
+    demanderAutomatiquement: true,
+  }),
+  reseau: Object.freeze({
+    ipResolverUrl: 'https://api.ipify.org?format=json',
+  }),
+})</code></pre>
+      </section>
+
+      <section id="validateurs" class="doc-section" data-search="validateurs formulaires formHelper messages locale zod min max email senegal telephone">
+        <div class="section-heading">
+          <p class="section-kicker">11. Formulaires</p>
+          <h2>Validateurs, messages centralisés et `formHelper`</h2>
+        </div>
+
+        <p>
+          Le framework centralise maintenant les validateurs dans `utils/validators/` avec messages mutualisés et configuration de locale.
+        </p>
+
+        <h3>Exemple simple</h3>
+        <pre><code class="language-javascript">const { v } = require('../../utils/validators')
+
+const regles = {
+  prenom: [v.required('Prénom obligatoire.'), v.prenom()],
+  nom: [v.required(), v.nom()],
+  email: [v.required(), v.email()],
+  telephone: [v.required(), v.telephoneSenegal()],
+  motDePasse: [v.required(), v.minLength(8), v.containsUppercase(), v.containsDigit()],
+  confirmation: [v.required(), v.sameAs('motDePasse', 'Les mots de passe doivent être identiques.')],
+}</code></pre>
+
+        <h3>Exemples de validateurs déjà fournis</h3>
+        <div class="grid grid--cards">
+          <article class="card">
+            <h3>Texte</h3>
+            <p>`required`, `minLength`, `maxLength`, `pattern`, `username`, `nom`, `prenom`, `nomComplet`, `nomSociete`</p>
+          </article>
+          <article class="card">
+            <h3>Contact</h3>
+            <p>`email`, `telephoneSenegal`, `telephoneMobileSenegal`, `telephoneInternational`, `url`, `urlSecure`, `domaine`</p>
+          </article>
+          <article class="card">
+            <h3>Numérique</h3>
+            <p>`numeric`, `integer`, `decimal`, `min`, `max`, `montant`, `pourcentage`, `latitude`, `longitude`</p>
+          </article>
+          <article class="card">
+            <h3>Sécurité</h3>
+            <p>`strongPassword`, `otpCode`, `sameAs`, `containsUppercase`, `containsDigit`</p>
+          </article>
+          <article class="card">
+            <h3>Formats</h3>
+            <p>`uuid`, `ipv4`, `ipv6`, `ip`, `hexColor`, `json`, `mimeType`, `fileExtension`</p>
+          </article>
+        </div>
+
+        <h3>Exemple avec `formHelper`</h3>
+        <pre><code class="language-javascript">const form = creerFormHelper({
+  champs: {
+    prenom: '',
+    email: '',
+    telephone: '',
+  },
+})
+
+Page({
+  data: {
+    ...form.dataInitiale(),
+  },
+
+  handleInputChamp(e) {
+    form.handleInput(this, e)
+  },
+
+  soumettre() {
+    const validation = form.valider(this, regles)
+
+    if (!validation.ok) {
+      return
+    }
+
+    console.log(validation.valeurs)
+  },
+})</code></pre>
+      </section>
+
+      <section id="cas-complets" class="doc-section" data-search="cas complets backend auth crud appareil qr inscription exemples complets">
+        <div class="section-heading">
+          <p class="section-kicker">12. Cas réels</p>
+          <h2>Comment utiliser le framework dans les cas les plus fréquents</h2>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step__index">1</span>
+            <div>
+              <h3>Brancher un backend Bearer classique</h3>
+              <p>Modifie `config/environments.js` pour le `baseUrl`, puis `config/authProvider.js` pour `transport`, `loginFields` et `endpoints`.</p>
+              <pre><code class="language-javascript">// environments.js
+api: Object.freeze({
+  baseUrl: 'https://api.exemple.com',
+  prefix: '/v1',
+  timeoutMs: 10000,
+}),
+auth: Object.freeze({
+  strategy: 'api',
+  redirectAfterLogin: 'index',
+  redirectIfGuest: 'login',
+}),
+
+// authProvider.js
+transport: 'bearer',
+loginFields: Object.freeze({
+  identifiant: 'email',
+  motDePasse: 'password',
+}),
+endpoints: Object.freeze({
+  login: '/auth/login',
+  me: '/auth/me',
+  logout: '/auth/logout',
+})</code></pre>
+            </div>
+          </article>
+
+          <article class="step">
+            <span class="step__index">2</span>
+            <div>
+              <h3>Créer un CRUD propre</h3>
+              <p>Ne mets pas les requêtes HTTP directement dans la page. Crée un client API métier.</p>
+              <pre><code class="language-javascript">function creerClientApiClients(apiService) {
+  return {
+    lister() {
+      return apiService.get('/clients', { auth: true })
+    },
+    creer(payload) {
+      return apiService.post('/clients', payload, { auth: true })
+    },
+  }
+}
+
+Page({
+  async onShow() {
+    const { apiService } = serviceApp()
+    const clientApi = creerClientApiClients(apiService)
+    const clients = await clientApi.lister()
+    this.setData({ clients })
+  },
+})</code></pre>
+            </div>
+          </article>
+
+          <article class="step">
+            <span class="step__index">3</span>
+            <div>
+              <h3>Faire une page de scan QR</h3>
+              <p>Le bon point d’entrée est toujours `configurationAppareil`.</p>
+              <pre><code class="language-javascript">Page({
+  async scannerProduit() {
+    const { configurationAppareil } = serviceApp()
+    const resultat = await configurationAppareil.scannerCode()
+
+    if (!resultat || !resultat.result) {
+      return
+    }
+
+    this.setData({
+      codeScanne: resultat.result,
+    })
+  },
+})</code></pre>
+            </div>
+          </article>
+
+          <article class="step">
+            <span class="step__index">4</span>
+            <div>
+              <h3>Construire un formulaire d’inscription sans logique répétée</h3>
+              <p>Utilise `creerFormHelper` et `v.*` pour centraliser saisie, validation et messages.</p>
+              <pre><code class="language-javascript">const { creerFormHelper } = require('../../utils/helpers/formHelper')
+const { v } = require('../../utils/validators')
+
+const form = creerFormHelper({
+  champs: {
+    prenom: '',
+    email: '',
+    telephone: '',
+  },
+})
+
+const regles = {
+  prenom: [v.required(), v.prenom()],
+  email: [v.required(), v.email()],
+  telephone: [v.required(), v.telephoneSenegal()],
+}</code></pre>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tests" class="doc-section" data-search="tests check framework ready lint pack publish release template">
+        <div class="section-heading">
+          <p class="section-kicker">13. Qualité</p>
+          <h2>Tests, maintenance, template et publication</h2>
+        </div>
+
+        <h3>Commandes principales</h3>
+        <pre><code class="language-bash"># Starter source
+cd from-scratch-app
+npm run framework:ready
+
+# CLI
+cd ../create-pmt-miniapp
+npm run lint
+npm run refresh:template
+npm run pack:check</code></pre>
+
+        <h3>Ce que vérifie `framework:ready`</h3>
+        <ul>
+          <li>bootstrap</li>
+          <li>navigation</li>
+          <li>pages</li>
+          <li>état</li>
+          <li>storage</li>
+          <li>API</li>
+          <li>appareil</li>
+        </ul>
+
+        <h3>Avant une publication npm</h3>
+        <ol>
+          <li>mettre à jour la version</li>
+          <li>mettre à jour le changelog</li>
+          <li>régénérer le template</li>
+          <li>lancer `framework:ready` sur la source</li>
+          <li>lancer `framework:ready` sur le template</li>
+          <li>lancer `npm run lint` et `npm run pack:check` sur le CLI</li>
+          <li>publier avec OTP ou authentification web npm</li>
+        </ol>
+      </section>
+
+      <section id="deploiement" class="doc-section" data-search="déploiement vercel html css statique root directory clean urls production preview">
+        <div class="section-heading">
+          <p class="section-kicker">14. Mise en ligne</p>
+          <h2>Déployer cette documentation sur Vercel</h2>
+        </div>
+
+        <h3>Structure du site</h3>
+        <pre><code class="language-text">pmt-document-site/
+├─ index.html
+├─ 404.html
+├─ vercel.json
+└─ assets/
+   ├─ site.css
+   └─ site.js</code></pre>
+
+        <h3>Déploiement Vercel depuis l’interface</h3>
+        <ol>
+          <li>importe le dépôt Git dans Vercel</li>
+          <li>choisis `pmt-document-site` comme `Root Directory`</li>
+          <li>laisse le preset sur projet statique ou “Other”</li>
+          <li>ne mets aucun build command</li>
+          <li>ne mets aucun output directory supplémentaire</li>
+          <li>déploie</li>
+        </ol>
+
+        <h3>Déploiement Vercel depuis le terminal</h3>
+        <pre><code class="language-bash">cd /home/pmt/WeChatProjects/Mes_document/documentation/pmt-document-site
+vercel
+vercel --prod</code></pre>
+
+        <h3>Prévisualisation locale</h3>
+        <pre><code class="language-bash">cd /home/pmt/WeChatProjects/Mes_document/documentation/pmt-document-site
+python3 -m http.server 4173</code></pre>
+
+        <p>Puis ouvre `http://localhost:4173`.</p>
+
+        <div class="callout callout--success">
+          <strong>Bon réflexe Vercel</strong>
+          <p>
+            Garde cette documentation comme un site statique séparé du framework. Tu évites ainsi de mélanger le code produit et le site de doc,
+            tout en gardant un déploiement très simple.
+          </p>
+        </div>
+      </section>
+
+      <section id="faq" class="doc-section" data-search="faq règles erreurs bonnes pratiques anti patterns what not to do">
+        <div class="section-heading">
+          <p class="section-kicker">15. Règles de projet</p>
+          <h2>FAQ, conventions et anti-patterns</h2>
+        </div>
+
+        <div class="faq">
+          <article class="faq__item">
+            <h3>Est-ce que `PMTMiniApp` embarque le backend ?</h3>
+            <p>Non. Il embarque le frontend, la structure, la configuration, les services et la manière propre de consommer un backend.</p>
+          </article>
+
+          <article class="faq__item">
+            <h3>Où configurer un backend ?</h3>
+            <p>Commence par `config/environments.js`, puis `config/authProvider.js` si le sujet touche l’auth.</p>
+          </article>
+
+          <article class="faq__item">
+            <h3>Où mettre une donnée ?</h3>
+            <p>
+              UI locale : `data`. Valeur globale partagée : service métier ou `gestionnaireEtat`. Valeur persistante : `sessionService` ou storage.
+            </p>
+          </article>
+
+          <article class="faq__item">
+            <h3>Puis-je lire l’IMEI ?</h3>
+            <p>Non, pas dans le cadre officiel WeChat Mini Program. Le framework le documente explicitement comme indisponible.</p>
+          </article>
+
+          <article class="faq__item">
+            <h3>Puis-je publier sans OTP npm ?</h3>
+            <p>Seulement si ton compte ou ton token npm le permet. Sinon, la publication réclame un OTP ou une auth web npm.</p>
+          </article>
+        </div>
+
+        <div class="callout callout--danger">
+          <strong>À éviter</strong>
+          <p>
+            Écrire directement dans `globalData.noyau.state`, mettre toute la logique réseau dans une page, ou créer des accès natifs
+            hors des services exposés. Le framework t’évite précisément ce type de dérive.
+          </p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>
+          <p class="footer__title">PMTMiniApp Documentation</p>
+          <p>
+            Version HTML/CSS statique pensée pour un déploiement Vercel. Elle complète les documents Markdown présents dans le dépôt,
+            mais reste autonome pour un développeur qui veut comprendre et utiliser le framework sans ouvrir tout le code.
+          </p>
+        </div>
+        <div class="footer__meta">
+          <p>Version framework : <strong>1.2.0</strong></p>
+          <p>Dossier source : <code>pmt-document-site/</code></p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="./assets/site.js"></script>
+</body>
+</html>
