@@ -62,17 +62,29 @@ revealTargets.forEach((target, index) => {
   target.style.setProperty('--reveal-delay', `${(index % 6) * 55}ms`);
 });
 
-if (prefersReducedMotion.matches) {
-  revealTargets.forEach((target) => target.classList.add('is-visible'));
+function marquerVisible(target) {
+  target.classList.add('is-visible');
+}
+
+const canAnimate = !prefersReducedMotion.matches && typeof window.IntersectionObserver === 'function';
+
+if (!canAnimate || revealTargets.length === 0) {
+  revealTargets.forEach(marquerVisible);
 } else {
-  document.body.classList.add('has-motion');
+  document.body.classList.add('has-motion', 'animate-ready');
+  let visibles = 0;
 
   const revealObserver = new IntersectionObserver((entries, currentObserver) => {
     entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
+      if (!entry.isIntersecting || entry.target.classList.contains('is-visible')) return;
 
-      entry.target.classList.add('is-visible');
+      marquerVisible(entry.target);
+      visibles += 1;
       currentObserver.unobserve(entry.target);
+
+      if (visibles >= revealTargets.length) {
+        document.body.classList.remove('animate-ready');
+      }
     });
   }, {
     rootMargin: '0px 0px -10% 0px',
@@ -80,6 +92,12 @@ if (prefersReducedMotion.matches) {
   });
 
   revealTargets.forEach((target) => revealObserver.observe(target));
+
+  // Fallback: guarantee content visibility even if observer events are missed.
+  window.setTimeout(() => {
+    revealTargets.forEach(marquerVisible);
+    document.body.classList.remove('animate-ready');
+  }, 1200);
 }
 
 document.querySelectorAll('pre').forEach((pre) => {
