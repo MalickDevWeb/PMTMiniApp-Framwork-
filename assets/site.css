@@ -762,15 +762,18 @@ body::after {
 }
 
 .profile-card__top {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+  gap: 0.65rem;
 }
 
 .profile-card__headline {
   display: grid;
   gap: 0.18rem;
   min-width: 0;
+  justify-items: center;
 }
 
 .profile-card__avatar-wrap {
@@ -778,8 +781,8 @@ body::after {
   display: grid;
   place-items: center;
   flex: none;
-  width: 76px;
-  height: 76px;
+  width: 88px;
+  height: 88px;
   padding: 4px;
   border-radius: 50%;
   background:
@@ -811,7 +814,7 @@ body::after {
 
 .profile-card__name {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: #fff3e5;
@@ -827,7 +830,8 @@ body::after {
   margin: 0;
   color: rgba(255, 226, 199, 0.84);
   line-height: 1.5;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
+  text-align: center;
 }
 
 .profile-card__contacts {
@@ -874,6 +878,7 @@ body::after {
   font-weight: 800;
   line-height: 1.35;
   color: #fff2df;
+  overflow-wrap: anywhere;
 }
 
 .profile-card__link:hover,
@@ -1576,14 +1581,14 @@ pre code {
   }
 
   .profile-card__top {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr;
+    justify-items: center;
     text-align: center;
   }
 
   .profile-card__avatar-wrap {
-    width: 92px;
-    height: 92px;
+    width: 88px;
+    height: 88px;
   }
 
   .profile-card__headline {
