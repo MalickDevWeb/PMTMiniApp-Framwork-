@@ -81,6 +81,7 @@
             <span class="hero__badge">État + lifecycle</span>
             <span class="hero__badge">Appareil natif</span>
             <span class="hero__badge">Validateurs</span>
+            <span class="hero__badge">Linux DevTools</span>
           </div>
 
           <div class="hero__stats" aria-label="Résumé express de la documentation">
@@ -174,7 +175,7 @@
         </div>
       </section>
 
-      <section id="demarrage" class="doc-section" data-search="installation démarrage create pmtminiapp npx npm create update">
+      <section id="demarrage" class="doc-section" data-search="installation démarrage create pmtminiapp npx npm create update linux devtools wechat tencent msojocs docker release pmtminiapp-dev-tools deb install">
         <div class="section-heading">
           <p class="section-kicker">2. Installation</p>
           <h2>Démarrage rapide</h2>
@@ -223,6 +224,84 @@ npm run check</code></pre>
           <p>
             `routes.json` décrit la navigation. Il ne crée pas les fichiers physiques d’une page. Pour créer une vraie page, utilise
             `npm run create:page -- nomPage`.
+          </p>
+        </div>
+
+        <div id="linux-devtools" class="media-card">
+          <div class="media-card__copy">
+            <p class="section-kicker">Bonus Linux</p>
+            <h3>Installer WeChat DevTools sur Linux proprement</h3>
+            <p>
+              Si tu travailles sous Linux, le chemin le plus propre dans cet écosystème passe par ton dépôt compagnon
+              <code>PMTMiniApp-Dev-Tools</code>, qui encapsule l’installation Linux, ajoute une icône, un lanceur menu, un raccourci bureau
+              et simplifie l’usage d’une build Linux stable de WeChat DevTools.
+            </p>
+          </div>
+          <img
+            class="media-card__image"
+            src="./assets/devtools/linux-devtools.png"
+            alt="Illustration PMTMiniApp Dev Tools pour Linux"
+          >
+        </div>
+
+        <div class="doc-columns">
+          <div>
+            <h3>Ce qu’il faut savoir avant de commencer</h3>
+            <ul>
+              <li>le dépôt `PMTMiniApp-Dev-Tools` fournit un paquet prêt à installer : `dist/pmtminiapp-dev-tools_2.01.2510290-2_amd64.deb`</li>
+              <li>le script Linux télécharge la build stable `io.github.msojocs.wechat-devtools-linux_2.01.2510290-1_amd64.deb` puis l’installe dans un espace utilisateur propre</li>
+              <li>après installation, l’application apparaît dans le menu sous `PMTMiniApp Dev Tools` et un raccourci bureau est créé</li>
+              <li>si Ubuntu affiche un `X` rouge sur le raccourci, il faut faire `clic droit > Autoriser le lancement`</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Méthode la plus simple : installer le `.deb`</h3>
+            <ol>
+              <li>ouvre les `Releases` du dépôt `PMTMiniApp-Dev-Tools`</li>
+              <li>télécharge `pmtminiapp-dev-tools_2.01.2510290-2_amd64.deb`</li>
+              <li>double-clique sur le fichier puis clique sur `Installer`</li>
+              <li>si le double-clic ne marche pas, utilise la commande `apt` ci-dessous</li>
+            </ol>
+
+            <pre><code class="language-bash">sudo apt install ./pmtminiapp-dev-tools_2.01.2510290-2_amd64.deb</code></pre>
+          </div>
+        </div>
+
+        <h3>Installation depuis les scripts du dépôt</h3>
+        <p>
+          Si tu préfères installer depuis le dépôt lui-même, le script prévu pour Linux fait déjà le téléchargement, l’extraction et la création des lanceurs.
+        </p>
+        <pre><code class="language-bash">git clone https://github.com/MalickDevWeb/PMTMiniApp-Dev-Tools.git
+cd PMTMiniApp-Dev-Tools
+chmod +x scripts/install-linux.sh
+./scripts/install-linux.sh</code></pre>
+
+        <h3>Ce que le script installe exactement</h3>
+        <pre><code class="language-text">~/Applications/run-pmtminiapp-dev-tools.sh
+~/.local/share/applications/pmtminiapp-dev-tools.desktop
+~/Bureau/PMTMiniApp Dev Tools.desktop
+~/Desktop/PMTMiniApp Dev Tools.desktop
+~/.local/share/icons/hicolor/512x512/apps/pmtminiapp-dev-tools.png
+~/.local/share/wechat-devtools-stable-clean/</code></pre>
+
+        <h3>Si tu veux fabriquer ton propre installateur Linux</h3>
+        <p>
+          Le dépôt contient aussi un script de build Debian pour produire un vrai paquet `.deb` publiable dans GitHub Releases.
+        </p>
+        <pre><code class="language-bash">git clone https://github.com/MalickDevWeb/PMTMiniApp-Dev-Tools.git
+cd PMTMiniApp-Dev-Tools
+chmod +x scripts/build-deb.sh
+./scripts/build-deb.sh</code></pre>
+
+        <p>Le paquet généré sortira dans :</p>
+        <pre><code class="language-text">dist/pmtminiapp-dev-tools_2.01.2510290-2_amd64.deb</code></pre>
+
+        <div class="callout callout--info">
+          <strong>Bon réflexe Linux</strong>
+          <p>
+            Ton dépôt `PMTMiniApp-Dev-Tools` est la meilleure porte d’entrée pour un utilisateur Linux final. Il masque la complexité du port Linux,
+            garde une installation reproductible et rend l’outil lançable depuis le menu système sans bricolage manuel à chaque machine.
           </p>
         </div>
       </section>
