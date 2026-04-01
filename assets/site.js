@@ -1,6 +1,8 @@
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
 const docSearch = document.getElementById('docSearch');
+const docSearchStatus = document.getElementById('docSearchStatus');
+const scrollProgress = document.getElementById('scrollProgress');
 const navLinks = Array.from(document.querySelectorAll('.sidebar__nav a'));
 const sections = Array.from(document.querySelectorAll('.doc-section'));
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -20,8 +22,22 @@ function normaliserTexte(value) {
 }
 
 if (docSearch) {
-  docSearch.addEventListener('input', (event) => {
-    const query = normaliserTexte(event.target.value);
+  const setSearchStatus = (query, visibleCount) => {
+    if (!docSearchStatus) return;
+
+    if (!query) {
+      docSearchStatus.textContent = `${navLinks.length} sections`;
+      return;
+    }
+
+    docSearchStatus.textContent = visibleCount > 0
+      ? `${visibleCount} sections visibles`
+      : 'Aucune section trouvée';
+  };
+
+  const appliquerRecherche = (inputValue) => {
+    const query = normaliserTexte(inputValue).trim();
+    let visibleCount = 0;
 
     navLinks.forEach((link) => {
       const text = normaliserTexte(link.textContent);
@@ -30,11 +46,20 @@ if (docSearch) {
       const visible = !query || haystack.includes(query);
 
       link.style.display = visible ? '' : 'none';
+      if (visible) visibleCount += 1;
       if (section) {
         section.style.opacity = visible || !query ? '' : '0.38';
       }
     });
+
+    setSearchStatus(query, visibleCount);
+  };
+
+  docSearch.addEventListener('input', (event) => {
+    appliquerRecherche(event.target.value);
   });
+
+  appliquerRecherche(docSearch.value || '');
 }
 
 const observer = new IntersectionObserver((entries) => {
@@ -98,6 +123,20 @@ if (!canAnimate || revealTargets.length === 0) {
     revealTargets.forEach(marquerVisible);
     document.body.classList.remove('animate-ready');
   }, 1200);
+}
+
+if (scrollProgress) {
+  const actualiserProgression = () => {
+    const root = document.documentElement;
+    const scrollTop = root.scrollTop || document.body.scrollTop;
+    const maxScroll = Math.max(root.scrollHeight - root.clientHeight, 1);
+    const ratio = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+    scrollProgress.style.setProperty('--progress', `${ratio}`);
+  };
+
+  actualiserProgression();
+  window.addEventListener('scroll', actualiserProgression, { passive: true });
+  window.addEventListener('resize', actualiserProgression);
 }
 
 document.querySelectorAll('pre').forEach((pre) => {
